@@ -2,20 +2,17 @@ package com.entelect.upskill.concatenation.controller;
 
 import com.entelect.upskill.concatenation.model.ConcatenatedPersonDTO;
 import com.entelect.upskill.concatenation.model.Person;
-import com.entelect.upskill.configuration.PersonConfiguration;
 import com.entelect.upskill.properties.PersonProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -28,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
-@EnableConfigurationProperties(value = PersonConfiguration.class)
+@EnableConfigurationProperties(value = PersonProperties.class)
 class PersonControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
