@@ -2,20 +2,19 @@ package com.entelect.upskill.concatenation.controller;
 
 import com.entelect.upskill.concatenation.model.ConcatenatedPersonDTO;
 import com.entelect.upskill.concatenation.model.Person;
+import com.entelect.upskill.configuration.PersonConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -25,20 +24,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({SpringExtension.class})
 @ActiveProfiles("upskilltest")
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@EnableConfigurationProperties(value = PersonConfiguration.class)
 class PersonControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private PersonConfiguration personConfiguration;
+    
+
     private String getUri() { return "http://localhost/concatenate"; }
 
-    @BeforeAll
+    @BeforeEach
     void setup() {
         objectMapper.findAndRegisterModules();
     }
@@ -65,8 +67,8 @@ class PersonControllerTest {
 
     private String stubRequestAsString() throws JsonProcessingException {
         Person stubPerson = new Person();
-        stubPerson.setName("Peter");
-        stubPerson.setAge(28);
+        stubPerson.setName(personConfiguration.getName());
+        stubPerson.setAge(personConfiguration.getAge());
         return objectMapper.writeValueAsString(stubPerson);
     }
 
