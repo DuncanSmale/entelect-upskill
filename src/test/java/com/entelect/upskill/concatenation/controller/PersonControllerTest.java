@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("upskilltest")
+@ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnableConfigurationProperties(value = PersonConfiguration.class)
