@@ -1,7 +1,9 @@
 spring:
+  cloud:
+    config:
+      password: root
+      username: root
   config:
-    import: optional:configserver:http://root:root@localhost:8888
+    import: optional:configserver:http://localhost:8888
   profiles:
     active: development
-  application:
-    name: upskill

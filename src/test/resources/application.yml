@@ -1,14 +1,9 @@
-person:
-  name: 'Peter'
-  age: 34
-
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-  datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/test
-    username: test
-    password: test
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    config:
+      username: root
+      password: root
+  config:
+    import: optional:configserver:http://localhost:8888
+  profiles:
+    active: testing
