@@ -3,6 +3,7 @@ package com.entelect.upskill.concatenation.controller;
 import com.entelect.upskill.concatenation.model.ConcatenatedPersonDTO;
 import com.entelect.upskill.concatenation.model.Person;
 import com.entelect.upskill.configuration.PersonConfiguration;
+import com.entelect.upskill.properties.PersonProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
@@ -35,7 +36,7 @@ class PersonControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private PersonConfiguration personConfiguration;
+    private PersonProperties personConfiguration;
     
 
     private String getUri() { return "http://localhost/concatenate"; }
@@ -67,8 +68,8 @@ class PersonControllerTest {
 
     private String stubRequestAsString() throws JsonProcessingException {
         Person stubPerson = new Person();
-        stubPerson.setName(personConfiguration.getName());
-        stubPerson.setAge(personConfiguration.getAge());
+        stubPerson.setName(personConfiguration.getPeople().get(0).getName());
+        stubPerson.setAge(personConfiguration.getPeople().get(0).getAge());
         return objectMapper.writeValueAsString(stubPerson);
     }
 
