@@ -2,6 +2,7 @@ package com.entelect.upskill.properties;
 
 import com.entelect.upskill.concatenation.model.Person;
 import com.entelect.upskill.library.model.AuthorEntity;
+import com.entelect.upskill.library.model.BookEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,4 +17,5 @@ import java.util.List;
 public class PersonProperties {
     private List<Person> people;
     private List<AuthorEntity> authors;
+    private List<BookEntity> books;
 }

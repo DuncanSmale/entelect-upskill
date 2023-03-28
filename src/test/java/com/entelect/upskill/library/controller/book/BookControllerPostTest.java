@@ -1,8 +1,9 @@
-package com.entelect.upskill.library.controller;
+package com.entelect.upskill.library.controller.book;
 
-import com.entelect.upskill.concatenation.model.Person;
 import com.entelect.upskill.library.dtos.AuthorDTO;
+import com.entelect.upskill.library.dtos.BookDTO;
 import com.entelect.upskill.library.repository.AuthorRepository;
+import com.entelect.upskill.library.repository.BookRepository;
 import com.entelect.upskill.properties.PersonProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,27 +26,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthorControllerPostTest {
+class BookControllerPostTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private PersonProperties testConfiguration;
-
     @MockBean
-    private AuthorRepository authorRepository;
+    private BookRepository bookRepository;
 
     private String getUri() {
-        return "http://localhost/author";
+        return "http://localhost/book";
     }
 
     @BeforeEach
@@ -75,20 +73,25 @@ class AuthorControllerPostTest {
     }
 
     private void mockRepositoryBehaviour() {
-        when(authorRepository.save(any())).thenAnswer(i -> i.getArguments()[0]);
+        when(bookRepository.save(any())).thenAnswer(i -> i.getArguments()[0]);
     }
 
     private String stubRequestAsString() throws JsonProcessingException {
-        AuthorDTO stubAuthor = new AuthorDTO();
-        stubAuthor.setFirstName(testConfiguration.getAuthors().get(0).getFirstName());
-        stubAuthor.setLastName(testConfiguration.getAuthors().get(0).getLastName());
-        return objectMapper.writeValueAsString(stubAuthor);
+        BookDTO stubBook = new BookDTO();
+        AuthorDTO author = new AuthorDTO();
+        author.setFirstName(testConfiguration.getBooks().get(0).getAuthor().getFirstName());
+        author.setLastName(testConfiguration.getBooks().get(0).getAuthor().getLastName());
+        stubBook.setTitle(testConfiguration.getBooks().get(0).getTitle());
+        stubBook.setAuthor(author);
+        return objectMapper.writeValueAsString(stubBook);
     }
 
 
     private void verifyResponse(MvcResult result) throws IOException {
-        AuthorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO.class);
+        BookDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), BookDTO.class);
         assertNotNull(response);
-        assertEquals("Peter", response.getFirstName());
+        assertEquals("Happy Peter and the Wizard of Escabar", response.getTitle());
+        assertEquals("Dave", response.getAuthor().getFirstName());
     }
+
 }
