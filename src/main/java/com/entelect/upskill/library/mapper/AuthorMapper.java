@@ -5,7 +5,7 @@ import com.entelect.upskill.library.model.AuthorEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface AuthorMapper {
     AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
     AuthorDTO toAuthorDTO(AuthorEntity authorEntity);
