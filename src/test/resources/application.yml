@@ -35,6 +35,21 @@ upskill-configuration :
 
     - name : Ryan
       age  : 26
+  authors:
+    -
+      authorId: 0
+      firstName: Peter
+      lastName: Ryan
+      countryOfResidence: South Africa
+      emailAddress: p@r.com
+      delete: false
+    -
+      authorId: 1
+      firstName: Dave
+      lastName: Martin
+      countryOfResidence: UK
+      emailAddress: d@m.com
+      delete: false
 
 
 
