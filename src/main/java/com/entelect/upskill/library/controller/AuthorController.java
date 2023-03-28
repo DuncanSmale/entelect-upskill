@@ -1,5 +1,7 @@
 package com.entelect.upskill.library.controller;
 
+import com.entelect.upskill.library.dtos.AuthorDTO;
+import com.entelect.upskill.library.mapper.AuthorMapper;
 import com.entelect.upskill.library.model.AuthorEntity;
 import com.entelect.upskill.library.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("author")
@@ -24,28 +27,36 @@ public class AuthorController {
 
 
     @GetMapping
-    public ResponseEntity<List<AuthorEntity>> getAllAuthors() {
-        return ResponseEntity.ok(authorRepository.findAll());
+    public ResponseEntity<List<AuthorDTO>> getAllAuthors() {
+        return ResponseEntity.ok(authorRepository.findAll().stream().map(AuthorMapper.INSTANCE::toAuthorDTO).collect(Collectors.toList()));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<AuthorEntity> getAuthorById(@PathVariable("id") Integer authorId) {
+    public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable("id") Integer authorId) {
         Optional<AuthorEntity> foundEntity = authorRepository.findById(authorId);
-        return foundEntity.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        if (foundEntity.isPresent()){
+            AuthorDTO authorDTO = AuthorMapper.INSTANCE.toAuthorDTO(foundEntity.get());
+            return  ResponseEntity.ok(authorDTO);
+        }else{
+            return  ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PostMapping
-    public ResponseEntity<AuthorEntity> createAuthor(@RequestBody AuthorEntity authorToCreate) {
+    public ResponseEntity<AuthorDTO> createAuthor(@RequestBody AuthorDTO authorToCreate) {
         authorToCreate.setAuthorId(null);
-        AuthorEntity savedEntity = authorRepository.save(authorToCreate);
-        return new ResponseEntity<>(savedEntity, HttpStatus.CREATED);
+        AuthorEntity authorEntity = AuthorMapper.INSTANCE.toAuthorEntity(authorToCreate);
+        AuthorEntity savedEntity = authorRepository.save(authorEntity);
+        return new ResponseEntity<>(AuthorMapper.INSTANCE.toAuthorDTO(savedEntity),HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<AuthorEntity> updateAuthor(@PathVariable("id") Integer authorId, @RequestBody AuthorEntity authorToSave) {
+    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable("id") Integer authorId, @RequestBody AuthorDTO authorToSave) {
         authorToSave.setAuthorId(authorId);
-        AuthorEntity savedEntity = authorRepository.save(authorToSave);
-        return new ResponseEntity<>(savedEntity, HttpStatus.OK);
+        AuthorEntity authorEntity = AuthorMapper.INSTANCE.toAuthorEntity(authorToSave);
+        AuthorEntity savedEntity = authorRepository.save(authorEntity);
+        return new ResponseEntity<>(AuthorMapper.INSTANCE.toAuthorDTO(savedEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
