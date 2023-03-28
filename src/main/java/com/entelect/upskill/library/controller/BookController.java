@@ -1,17 +1,20 @@
 package com.entelect.upskill.library.controller;
 
-import com.entelect.upskill.library.dtos.AuthorDTO;
 import com.entelect.upskill.library.dtos.BookDTO;
-import com.entelect.upskill.library.mapper.AuthorMapper;
 import com.entelect.upskill.library.mapper.BookMapper;
-import com.entelect.upskill.library.model.AuthorEntity;
 import com.entelect.upskill.library.model.BookEntity;
-import com.entelect.upskill.library.repository.AuthorRepository;
 import com.entelect.upskill.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
