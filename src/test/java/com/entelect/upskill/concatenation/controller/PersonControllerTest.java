@@ -34,9 +34,11 @@ class PersonControllerTest {
 
     @Autowired
     private PersonProperties personConfiguration;
-    
 
-    private String getUri() { return "http://localhost/concatenate"; }
+
+    private String getUri() {
+        return "http://localhost/concatenate";
+    }
 
     @BeforeEach
     void setup() {
@@ -52,9 +54,9 @@ class PersonControllerTest {
 
         // When
         MvcResult result = mockMvc.perform(
-                post(getUri()).contentType(MediaType.APPLICATION_JSON)
-                        .content(stubRequestAsString())
-                        .headers(new HttpHeaders()))
+                        post(getUri()).contentType(MediaType.APPLICATION_JSON)
+                                .content(stubRequestAsString())
+                                .headers(new HttpHeaders()))
                 .andExpect(status().isOk())
                 .andReturn();
 

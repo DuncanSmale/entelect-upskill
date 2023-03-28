@@ -20,6 +20,9 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2021.0.6")
+	set('mapstructVersion' , "1.5.2.Final")
+	set('lombokVersion', '1.18.22')
+	set('lombokMapstructBindingVersion', '0.2.0')
 }
 
 dependencyManagement {
@@ -33,11 +36,12 @@ dependencies {
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-	testImplementation 'org.projectlombok:lombok:1.18.22'
+	testImplementation "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 	testImplementation("com.h2database:h2")
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testAnnotationProcessor("org.projectlombok:lombok:1.18.22")
+	compileOnly "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
