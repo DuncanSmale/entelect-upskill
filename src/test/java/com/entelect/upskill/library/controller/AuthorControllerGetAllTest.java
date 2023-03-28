@@ -1,11 +1,8 @@
 package com.entelect.upskill.library.controller;
 
-import com.entelect.upskill.concatenation.model.ConcatenatedPersonDTO;
-import com.entelect.upskill.concatenation.model.Person;
 import com.entelect.upskill.library.dtos.AuthorDTO;
 import com.entelect.upskill.library.repository.AuthorRepository;
 import com.entelect.upskill.properties.PersonProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,11 +19,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("testing")

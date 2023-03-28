@@ -1,6 +1,5 @@
 package com.entelect.upskill.library.controller;
 
-import com.entelect.upskill.concatenation.model.Person;
 import com.entelect.upskill.library.dtos.AuthorDTO;
 import com.entelect.upskill.library.repository.AuthorRepository;
 import com.entelect.upskill.properties.PersonProperties;
@@ -25,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +64,7 @@ class AuthorControllerPostTest {
                         post(getUri()).contentType(MediaType.APPLICATION_JSON)
                                 .content(stubRequestAsString())
                                 .headers(new HttpHeaders()))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
 
         // Then
