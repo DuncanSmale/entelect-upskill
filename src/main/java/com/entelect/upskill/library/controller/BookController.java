@@ -1,5 +1,6 @@
 package com.entelect.upskill.library.controller;
 
+import com.entelect.upskill.library.aggregation.BookCount;
 import com.entelect.upskill.library.dtos.BookDTO;
 import com.entelect.upskill.library.mapper.BookMapper;
 import com.entelect.upskill.library.model.BookEntity;
@@ -67,5 +68,11 @@ public class BookController {
     @DeleteMapping("{id}")
     public void deleteBook(@PathVariable("id") Integer authorId) {
         bookRepository.deleteById(authorId);
+    }
+
+    @GetMapping("count-by-author")
+    public  ResponseEntity<List<BookCount>> getBookCountByAuthor(){
+       List<BookCount> bookCountsPerAuthor =  bookRepository.getBookCountByAuthor();
+       return ResponseEntity.ok(bookCountsPerAuthor);
     }
 }
