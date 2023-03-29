@@ -23,6 +23,8 @@ ext {
 	set('mapstructVersion' , "1.5.2.Final")
 	set('lombokVersion', '1.18.22')
 	set('lombokMapstructBindingVersion', '0.2.0')
+	set('camundaVersion', "7.15.0")
+	set('camundaJacksonVersion', "1.10.1")
 }
 
 dependencyManagement {
@@ -43,6 +45,13 @@ dependencies {
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:${camundaVersion}")
+	implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:${camundaVersion}")
+	implementation("org.camunda.bpm:camunda-engine-plugin-spin:${camundaVersion}")
+	implementation("org.camunda.spin:camunda-spin-dataformat-json-jackson:${camundaJacksonVersion}")
+
+	testImplementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-test:${camundaVersion}")
 }
 
 tasks.named('test') {

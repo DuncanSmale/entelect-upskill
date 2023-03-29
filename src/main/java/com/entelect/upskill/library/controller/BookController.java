@@ -5,6 +5,9 @@ import com.entelect.upskill.library.dtos.BookDTO;
 import com.entelect.upskill.library.mapper.BookMapper;
 import com.entelect.upskill.library.model.BookEntity;
 import com.entelect.upskill.library.repository.BookRepository;
+import lombok.RequiredArgsConstructor;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.impl.persistence.entity.ProcessInstanceWithVariablesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +20,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("book")
+@RequiredArgsConstructor
 public class BookController {
-    @Autowired
-    private BookRepository bookRepository;
 
-    public BookController(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
-
+    private final BookRepository bookRepository;
+    private final RuntimeService runtimeService;
 
     @GetMapping
     public ResponseEntity<List<BookDTO>> getAllBooks() {
@@ -74,5 +76,21 @@ public class BookController {
     public  ResponseEntity<List<BookCount>> getBookCountByAuthor(){
        List<BookCount> bookCountsPerAuthor =  bookRepository.getBookCountByAuthor();
        return ResponseEntity.ok(bookCountsPerAuthor);
+    }
+
+    @GetMapping("count-by-author/{id}")
+    public void getBookCountByAuthor(@PathVariable("id") Integer authorId){
+        BookCount count = bookRepository.getBookCountBySingleAuthor(authorId);
+
+        Map<String, Object> processVariables = new HashMap<>();
+
+        processVariables.put("authorId", authorId);
+        processVariables.put("count", count.getBookCount());
+
+        ProcessInstanceWithVariablesImpl process = (ProcessInstanceWithVariablesImpl)
+                runtimeService.startProcessInstanceByKey(
+                        "request-author-book-count",
+                        processVariables
+                );
     }
 }

@@ -15,5 +15,3 @@ VALUES 	(1, 'Happy Peter and the Wizard of Escabar', '2021-01-03', 'Penguin Book
           (2, 'Sign of the Crooked Footprint', '2013-01-21', 'Exclusive Books', '0-9354-1374-X'),
           (1, 'The Oracle in the Dusk', '2016-09-27', 'Penguin Books', '0-6582-6326-9'),
           (2, 'Crime of the Misshapen Librarian', '2012-06-26', 'Jonathan Ball', '0-7520-6750-8')
-
-SELECT * FROM books;
