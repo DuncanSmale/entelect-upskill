@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.10'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'org.springframework.boot' version '2.5.1'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 }
 
 group = 'com.entelect'
@@ -9,51 +9,62 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('springCloudVersion', "2021.0.6")
-	set('mapstructVersion' , "1.5.2.Final")
-	set('lombokVersion', '1.18.22')
-	set('lombokMapstructBindingVersion', '0.2.0')
-	set('camundaVersion', "7.15.0")
-	set('camundaJacksonVersion', "1.10.1")
+    set('springCloudVersion', "2020.0.3")
+    set('mapstructVersion', "1.5.2.Final")
+    set('lombokVersion', '1.18.22')
+    set('lombokMapstructBindingVersion', '0.2.0')
+    set('camundaVersion', "7.15.0")
+    set('camundaJacksonVersion', "1.10.1")
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-	testImplementation "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
-	testImplementation("com.h2database:h2")
-	compileOnly "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
-	implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
-	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
-	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    testImplementation "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    compileOnly "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:${camundaVersion}")
-	implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:${camundaVersion}")
-	implementation("org.camunda.bpm:camunda-engine-plugin-spin:${camundaVersion}")
-	implementation("org.camunda.spin:camunda-spin-dataformat-json-jackson:${camundaJacksonVersion}")
+    testImplementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:${camundaVersion}")
+    testImplementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:${camundaVersion}")
+    testImplementation("org.camunda.bpm:camunda-engine-plugin-spin:${camundaVersion}")
+    testImplementation("org.camunda.spin:camunda-spin-dataformat-json-jackson:${camundaJacksonVersion}")
 
-	testImplementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-test:${camundaVersion}")
+    testImplementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-test:${camundaVersion}")
+    testImplementation("org.mockito:mockito-inline")
+    testImplementation("com.h2database:h2")
+
+    testImplementation('org.camunda.bpm.extension:camunda-bpm-junit5:1.0.0')
+    testImplementation('org.camunda.bpm.assert:camunda-bpm-assert:6.0.0')
+
+    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:${camundaVersion}")
+    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:${camundaVersion}")
+    implementation("org.camunda.bpm:camunda-engine-plugin-spin:${camundaVersion}")
+    implementation("org.camunda.spin:camunda-spin-dataformat-json-jackson:${camundaJacksonVersion}")
+
+    testImplementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-test:${camundaVersion}")
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import java.util.ArrayList;
 import java.util.List;
