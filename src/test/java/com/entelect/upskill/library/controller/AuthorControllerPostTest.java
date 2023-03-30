@@ -80,6 +80,8 @@ class AuthorControllerPostTest {
         AuthorDTO stubAuthor = new AuthorDTO();
         stubAuthor.setFirstName(testConfiguration.getAuthors().get(0).getFirstName());
         stubAuthor.setLastName(testConfiguration.getAuthors().get(0).getLastName());
+        stubAuthor.setEmailAddress(testConfiguration.getAuthors().get(0).getEmailAddress());
+        stubAuthor.setCountryOfResidence(testConfiguration.getAuthors().get(0).getCountryOfResidence());
         return objectMapper.writeValueAsString(stubAuthor);
     }
 
@@ -88,5 +90,8 @@ class AuthorControllerPostTest {
         AuthorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO.class);
         assertNotNull(response);
         assertEquals("Peter", response.getFirstName());
+        assertEquals("Ryan", response.getLastName());
+        assertEquals("South Africa", response.getCountryOfResidence());
+        assertEquals("p@r.com", response.getEmailAddress());
     }
 }
