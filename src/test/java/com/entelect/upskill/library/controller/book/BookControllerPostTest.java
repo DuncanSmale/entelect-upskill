@@ -1,6 +1,5 @@
 package com.entelect.upskill.library.controller.book;
 
-import com.entelect.upskill.library.dtos.AuthorDTO;
 import com.entelect.upskill.library.dtos.BookDTO;
 import com.entelect.upskill.library.repository.BookRepository;
 import com.entelect.upskill.properties.PersonProperties;
@@ -77,11 +76,8 @@ class BookControllerPostTest {
 
     private String stubRequestAsString() throws JsonProcessingException {
         BookDTO stubBook = new BookDTO();
-        AuthorDTO author = new AuthorDTO();
-        author.setFirstName(testConfiguration.getBooks().get(0).getAuthor().getFirstName());
-        author.setLastName(testConfiguration.getBooks().get(0).getAuthor().getLastName());
+        stubBook.setAuthorId(1);
         stubBook.setTitle(testConfiguration.getBooks().get(0).getTitle());
-        stubBook.setAuthor(author);
         return objectMapper.writeValueAsString(stubBook);
     }
 
@@ -90,7 +86,7 @@ class BookControllerPostTest {
         BookDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), BookDTO.class);
         assertNotNull(response);
         assertEquals("Happy Peter and the Wizard of Escabar", response.getTitle());
-        assertEquals("Dave", response.getAuthor().getFirstName());
+        assertEquals(1, response.getAuthorId());
     }
 
 }
