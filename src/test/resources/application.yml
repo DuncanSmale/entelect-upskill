@@ -50,6 +50,52 @@ upskill-configuration :
       countryOfResidence: UK
       emailAddress: d@m.com
       delete: false
+  books:
+    -
+      bookId: 0
+      title: "Happy Peter and the Wizard of Escabar"
+      publishedDate: '2021-01-03'
+      publisher: "Penguin Books"
+      isbn: '0-2487-9445-0'
+      deleted: false
+      author:
+        authorId: 1
+        firstName: Dave
+        lastName: Martin
+        countryOfResidence: UK
+        emailAddress: d@m.com
+        delete: false
+    -
+      bookId: 1
+      title: "The Face of the Eight"
+      publishedDate: '2022-04-03'
+      publisher: "Exclusive Books"
+      isbn: '0-8665-9950-9'
+      deleted: false
+      author:
+        authorId: 0
+        firstName: Peter
+        lastName: Ryan
+        countryOfResidence: South Africa
+        emailAddress: p@r.com
+        delete: false
+
+    -
+      bookId: 2
+      title: "Tapped for Sorrow"
+      publishedDate: '2019-09-27'
+      publisher: "Exclusive Books"
+      isbn: '0-8665-9950-9'
+      deleted: false
+      author:
+        authorId: 0
+        firstName: Peter
+        lastName: Ryan
+        countryOfResidence: South Africa
+        emailAddress: p@r.com
+        delete: false
+
+
 
 
 
