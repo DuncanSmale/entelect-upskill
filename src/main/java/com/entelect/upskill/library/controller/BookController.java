@@ -78,12 +78,9 @@ public class BookController {
 
     @GetMapping("count-by-author/{id}")
     public void getBookCountByAuthor(@PathVariable("id") Integer authorId){
-        Long count = bookRepository.countBookEntitiesByAuthorId(authorId);
-
         Map<String, Object> processVariables = new HashMap<>();
 
         processVariables.put("authorId", authorId);
-        processVariables.put("count", count);
 
         ProcessInstanceWithVariablesImpl process = (ProcessInstanceWithVariablesImpl)
                 runtimeService.startProcessInstanceByKey(

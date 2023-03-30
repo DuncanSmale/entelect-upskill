@@ -34,7 +34,7 @@ public class AuthorEntity {
     private String emailAddress;
     private boolean deleted;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "authorId", referencedColumnName = "authorId")
     private List<BookEntity> books = new ArrayList<>();
 }
