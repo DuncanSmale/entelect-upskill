@@ -2,7 +2,6 @@ package com.entelect.upskill.library.controller.book;
 
 import com.entelect.upskill.library.dtos.AuthorDTO;
 import com.entelect.upskill.library.dtos.BookDTO;
-import com.entelect.upskill.library.repository.AuthorRepository;
 import com.entelect.upskill.library.repository.BookRepository;
 import com.entelect.upskill.properties.PersonProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
