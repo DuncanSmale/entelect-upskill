@@ -3,9 +3,7 @@ package com.entelect.upskill.library.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,4 +15,5 @@ public class AuthorDTO {
     private String countryOfResidence;
     private String emailAddress;
     private boolean deleted;
+    private List<BookDTO> books;
 }
