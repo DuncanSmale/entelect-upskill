@@ -81,7 +81,6 @@ class BookControllerPutTest {
         stubBook.setISBN(testConfiguration.getBooks().get(0).getISBN());
         stubBook.setPublisher(testConfiguration.getBooks().get(0).getPublisher());
         stubBook.setPublishedDate(testConfiguration.getBooks().get(0).getPublishedDate());
-        stubBook.setDeleted(testConfiguration.getBooks().get(0).isDeleted());
         return objectMapper.writeValueAsString(stubBook);
     }
 
@@ -93,7 +92,6 @@ class BookControllerPutTest {
         assertEquals("Penguin Books", response.getPublisher());
         assertEquals("2021-01-03", response.getPublishedDate());
         assertEquals("0-2487-9445-0", response.getISBN());
-        assertEquals("false", response.isDeleted());
         assertEquals(1, response.getAuthorId());
     }
 

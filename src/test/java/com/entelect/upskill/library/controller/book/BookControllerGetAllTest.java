@@ -77,7 +77,6 @@ class BookControllerGetAllTest {
         assertEquals("Penguin Books", response[0].getPublisher());
         assertEquals("2021-01-03", response[0].getPublishedDate());
         assertEquals("0-2487-9445-0", response[0].getISBN());
-        assertEquals("false", response[0].isDeleted());
         assertEquals(1, response[0].getAuthorId());
 
     }

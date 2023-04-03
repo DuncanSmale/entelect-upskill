@@ -80,7 +80,6 @@ class BookControllerGetSingleTest {
         assertEquals("Penguin Books", response.getPublisher());
         assertEquals("2021-01-03", response.getPublishedDate());
         assertEquals("0-2487-9445-0", response.getISBN());
-        assertEquals("false", response.isDeleted());
         assertEquals(1, response.getAuthorId());
     }
 }

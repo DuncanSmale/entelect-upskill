@@ -1,8 +1,10 @@
 package com.entelect.upskill.library.controller.author;
 
+import com.entelect.upskill.library.common.AbstractControllerTest;
 import com.entelect.upskill.library.dtos.AuthorDTO;
 import com.entelect.upskill.library.repository.AuthorRepository;
 import com.entelect.upskill.properties.PersonProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,11 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthorControllerGetAllTest {
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private MockMvc mockMvc;
+class AuthorControllerGetAllTest extends AbstractControllerTest {
 
     @Autowired
     private PersonProperties testConfiguration;
@@ -40,41 +38,23 @@ class AuthorControllerGetAllTest {
     @MockBean
     private AuthorRepository authorRepository;
 
-    private String getUri() {
-        return "http://localhost/author";
-    }
-
-    @BeforeEach
-    void setup() {
-        objectMapper.findAndRegisterModules();
-    }
-
-    @Test
-    @DisplayName("Given a REST request, " +
-            "when the REST call is successful, " +
-            "then I expect the response to be correct")
-    public void testSuccessfulResponse() throws Exception {
-        // Given
-        mockRepositoryBehaviour();
-
-        // When
-        MvcResult result = mockMvc.perform(
-                        get(getUri()).contentType(MediaType.APPLICATION_JSON)
-                                .headers(new HttpHeaders()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        // Then
-        assertNotNull(result);
-        verifyResponse(result);
-    }
-
-    private void mockRepositoryBehaviour() {
+    @Override
+    protected void mockClientResponse() {
         when(authorRepository.findAll()).thenReturn(testConfiguration.getAuthors());
     }
 
-    private void verifyResponse(MvcResult result) throws IOException {
-        AuthorDTO[] response = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO[].class);
+    protected String getUri() {
+        return "http://localhost/author";
+    }
+
+    @Override
+    protected String stubRequestAsString() throws JsonProcessingException {
+        return null;
+    }
+
+
+    protected void verifyResponse(MvcResult result) throws IOException {
+        AuthorDTO[] response = jsonMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO[].class);
         assertNotNull(response);
 
         assertEquals(2, response.length);
@@ -88,5 +68,14 @@ class AuthorControllerGetAllTest {
         assertEquals("Martin", response[1].getLastName());
         assertEquals("UK", response[1].getCountryOfResidence());
         assertEquals("d@m.com", response[1].getEmailAddress());
+    }
+
+    @Override
+    protected MvcResult performRestRequest() throws Exception {
+        return mockMvc.perform(
+                        get(getUri()).contentType(MediaType.APPLICATION_JSON)
+                                .headers(new HttpHeaders()))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 }
