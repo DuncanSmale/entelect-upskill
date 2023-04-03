@@ -23,7 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.camunda.bpm.engine.test.assertions.bpmn.AbstractAssertions.processEngine;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({ProcessEngineExtension.class, MockitoExtension.class})
@@ -38,7 +37,7 @@ public class CheckAuthorProcessTest {
 
     private static final Long BOOK_COUNT_GREATER = 3L;
     private static final Long BOOK_COUNT_ZERO = 0L;
-    private static final Integer AUTHOR_ID = 1 ;
+    private static final Integer AUTHOR_ID = 1;
     @RegisterExtension
     ProcessEngineExtension extension = ProcessEngineExtension.builder()
             .configurationResource("camunda.cfg.xml")
@@ -66,7 +65,7 @@ public class CheckAuthorProcessTest {
     @DisplayName("Given an author book count is grater than 1, " +
             "when a request is made to check the author, " +
             "then I expect the author is kept")
-    void CheckRequestAuthorBookCountGreaterPath() throws Exception {
+    void checkRequestAuthorBookCountGreaterPath() {
 
         //Given
         when(bookRepository.countBookEntitiesByAuthorId(AUTHOR_ID)).thenReturn(BOOK_COUNT_GREATER);
@@ -74,17 +73,45 @@ public class CheckAuthorProcessTest {
         //When
         ProcessInstanceWithVariablesImpl processInstance = (ProcessInstanceWithVariablesImpl)
                 runtimeService().createProcessInstanceByKey(PROCESS_KEY)
-                        .setVariable("authorId",AUTHOR_ID)
+                        .setVariable("authorId", AUTHOR_ID)
                         .execute();
 
         //Then
-
         assertThat(processInstance).hasPassedInOrder(
                 ADD_BOOK_COUNT,
                 KEEP_AUTHOR,
                 LOG_PROCESS
         );
+
         assertThat(processInstance).isEnded();
+
+        ProcessTestCoverage.calculate(processInstance, processEngine());
+    }
+
+    @Test
+    @DisplayName("Given an author book count is less than or equal to 1, " +
+            "when a request is made to check the author, " +
+            "then I expect the author is deleted")
+    void checkRequestAuthorBookCountLessThanPath() {
+
+        //Given
+        when(bookRepository.countBookEntitiesByAuthorId(AUTHOR_ID)).thenReturn(BOOK_COUNT_ZERO);
+
+        //When
+        ProcessInstanceWithVariablesImpl processInstance = (ProcessInstanceWithVariablesImpl)
+                runtimeService().createProcessInstanceByKey(PROCESS_KEY)
+                        .setVariable("authorId", AUTHOR_ID)
+                        .execute();
+
+        //Then
+        assertThat(processInstance).hasPassedInOrder(
+                ADD_BOOK_COUNT,
+                DELETE_AUTHOR,
+                LOG_PROCESS
+        );
+
+        assertThat(processInstance).isEnded();
+
         ProcessTestCoverage.calculate(processInstance, processEngine());
     }
 }
