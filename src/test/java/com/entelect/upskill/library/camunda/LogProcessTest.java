@@ -8,26 +8,25 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class LogPathAuthorIdAndBookCountTest {
+class LogProcessTest {
 
     @Mock
     private DelegateExecution delegateExecution;
 
     @InjectMocks
-    private LogPathAuthorIdAndBookCount cut ;
+    private LogProcess cut;
 
     @Test
     @DisplayName("Given a request, " +
             "when the execution method is invoked, " +
             "then the set variable method was called 3 times")
-    void checkExecutionGetVariableIsCalledThreeTime() throws  Exception {
+    void checkExecutionGetVariableIsCalledThreeTime() {
         // Given
         when(delegateExecution.getVariable("authorId")).thenReturn(1);
         when(delegateExecution.getVariable("path")).thenReturn("path");
@@ -37,6 +36,8 @@ class LogPathAuthorIdAndBookCountTest {
         cut.execute(delegateExecution);
 
         // Then
-        verify(delegateExecution, times(3)).getVariable(anyString());
+        verify(delegateExecution, times(1)).getVariable("authorId");
+        verify(delegateExecution, times(1)).getVariable("path");
+        verify(delegateExecution, times(1)).getVariable("count");
     }
 }

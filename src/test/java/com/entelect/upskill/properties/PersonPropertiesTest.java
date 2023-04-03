@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,30 +22,30 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class PersonPropertiesTest {
 
     @Autowired
-    private  PersonProperties personProperties;
+    private PersonProperties personProperties;
 
     @Test
-    @DisplayName("Given the upskill-properties , "+
-                 "When getPeople method is invoked ,"+
-                 "Then I expect the list to be not empty ")
-    void getAllPeople(){
+    @DisplayName("Given the upskill-properties, " +
+            "when getPeople method is invoked, " +
+            "then I expect the list to be not empty")
+    void getAllPeople() {
         //Given && When
-        List<Person>  people = personProperties.getPeople();
+        List<Person> people = personProperties.getPeople();
 
         //Then
         assertFalse(people.isEmpty());
     }
 
     @Test
-    @DisplayName("Given the upskill-properties ,"+
-                  "When getPeople method is invoked ,"+
-                   "Then I expect all the people names to be fetched")
-    void  getPeopleNames(){
+    @DisplayName("Given the upskill-properties, " +
+            "when getPeople method is invoked, " +
+            "then I expect all the people names to be fetched")
+    void getPeopleNames() {
         // Given && When
-        List<Person>  people = personProperties.getPeople();
+        List<Person> people = personProperties.getPeople();
 
         //Then
-        assertEquals("Peter",people.get(0).getName());
-        assertEquals("Ryan",people.get(1).getName());
+        assertEquals("Peter", people.get(0).getName());
+        assertEquals("Ryan", people.get(1).getName());
     }
 }

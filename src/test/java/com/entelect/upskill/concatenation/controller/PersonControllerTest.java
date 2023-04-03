@@ -5,9 +5,10 @@ import com.entelect.upskill.concatenation.model.Person;
 import com.entelect.upskill.properties.PersonProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
-@EnableConfigurationProperties(value = PersonProperties.class)
 class PersonControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -35,7 +34,6 @@ class PersonControllerTest {
 
     @Autowired
     private PersonProperties personConfiguration;
-
 
     private String getUri() {
         return "http://localhost/concatenate";

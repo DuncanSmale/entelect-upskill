@@ -11,8 +11,8 @@ class BookMapperTest {
 
     @Test
     @DisplayName("Given a book entity, " +
-            "When I call the to dto method, " +
-            "The entity should be mapped correctly")
+            "when I call the to dto method, " +
+            "then entity should be mapped correctly")
     void toBookDTO() {
         // Given
         BookEntity bookEntity = new BookEntity();
@@ -27,8 +27,8 @@ class BookMapperTest {
 
     @Test
     @DisplayName("Given a book dto, " +
-            "When I call the to entity method, " +
-            "The dto should be mapped correctly")
+            "when I call the to entity method, " +
+            "then dto should be mapped correctly")
     void toBookEntity() {
         // Given
         BookDTO bookDTO = new BookDTO();

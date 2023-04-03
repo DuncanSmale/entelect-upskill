@@ -14,6 +14,5 @@ public class AuthorDTO {
     private String lastName;
     private String countryOfResidence;
     private String emailAddress;
-    private boolean deleted;
     private List<BookDTO> books;
 }

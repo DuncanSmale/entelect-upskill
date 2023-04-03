@@ -8,10 +8,10 @@ import javax.inject.Named;
 
 @Log
 @Named
-public class LogPathAuthorIdAndBookCount implements JavaDelegate {
+public class LogProcess implements JavaDelegate {
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(DelegateExecution execution) {
         Integer authorId = (Integer) execution.getVariable("authorId");
         Long bookCount = (Long) execution.getVariable("count");
         String path = (String) execution.getVariable("path");
