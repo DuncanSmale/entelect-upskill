@@ -1,8 +1,9 @@
-package com.entelect.upskill.library.controller;
+package com.entelect.upskill.library.controller.author;
 
 import com.entelect.upskill.library.dtos.AuthorDTO;
 import com.entelect.upskill.library.repository.AuthorRepository;
 import com.entelect.upskill.properties.PersonProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,19 +19,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthorControllerGetSingleTest {
+class AuthorControllerPostTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
@@ -43,7 +43,7 @@ class AuthorControllerGetSingleTest {
     private AuthorRepository authorRepository;
 
     private String getUri() {
-        return "http://localhost/author/1";
+        return "http://localhost/author";
     }
 
     @BeforeEach
@@ -61,9 +61,10 @@ class AuthorControllerGetSingleTest {
 
         // When
         MvcResult result = mockMvc.perform(
-                        get(getUri()).contentType(MediaType.APPLICATION_JSON)
+                        post(getUri()).contentType(MediaType.APPLICATION_JSON)
+                                .content(stubRequestAsString())
                                 .headers(new HttpHeaders()))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
 
         // Then
@@ -72,8 +73,18 @@ class AuthorControllerGetSingleTest {
     }
 
     private void mockRepositoryBehaviour() {
-        when(authorRepository.findById(anyInt())).thenReturn(Optional.ofNullable(testConfiguration.getAuthors().get(0)));
+        when(authorRepository.save(any())).thenAnswer(i -> i.getArguments()[0]);
     }
+
+    private String stubRequestAsString() throws JsonProcessingException {
+        AuthorDTO stubAuthor = new AuthorDTO();
+        stubAuthor.setFirstName(testConfiguration.getAuthors().get(0).getFirstName());
+        stubAuthor.setLastName(testConfiguration.getAuthors().get(0).getLastName());
+        stubAuthor.setEmailAddress(testConfiguration.getAuthors().get(0).getEmailAddress());
+        stubAuthor.setCountryOfResidence(testConfiguration.getAuthors().get(0).getCountryOfResidence());
+        return objectMapper.writeValueAsString(stubAuthor);
+    }
+
 
     private void verifyResponse(MvcResult result) throws IOException {
         AuthorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO.class);
