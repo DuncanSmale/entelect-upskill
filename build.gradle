@@ -67,6 +67,7 @@ dependencies {
 
     testImplementation('org.camunda.bpm.extension:camunda-bpm-junit5:1.0.0')
     testImplementation('org.camunda.bpm.assert:camunda-bpm-assert:6.0.0')
+    testImplementation("org.camunda.consulting.snippets:process-test-coverage:0.2.3")
 
     testImplementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-test:${camundaVersion}")
 }
