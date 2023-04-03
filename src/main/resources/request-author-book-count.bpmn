@@ -9,40 +9,46 @@
       <bpmn:outgoing>Flow_1xox979</bpmn:outgoing>
       <bpmn:outgoing>Flow_0etbpiz</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1xox979" name="No" sourceRef="Gateway_0l0a71x" targetRef="Activity_1kfra43">
+    <bpmn:sequenceFlow id="Flow_1xox979" name="No" sourceRef="Gateway_0l0a71x" targetRef="keepAuthor">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{count &gt; 1}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0etbpiz" name="Yes" sourceRef="Gateway_0l0a71x" targetRef="Activity_195l0x4">
+    <bpmn:sequenceFlow id="Flow_0etbpiz" name="Yes" sourceRef="Gateway_0l0a71x" targetRef="deleteAuthor">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{count &lt;= 1}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0klsskz" name="The request has been completed">
       <bpmn:incoming>Flow_02x1qvo</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Activity_1kfra43" name="Return the author and count" camunda:delegateExpression="#{requestAuthorBookCountGreaterThanOne}">
+    <bpmn:serviceTask id="keepAuthor" name="Return the author and count" camunda:delegateExpression="#{keepAuthor}">
       <bpmn:incoming>Flow_1xox979</bpmn:incoming>
       <bpmn:outgoing>Flow_0w58if4</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_195l0x4" name="Delete author" camunda:delegateExpression="#{requestAuthorBookCountLessThanOrEqualToOne}">
+    <bpmn:serviceTask id="deleteAuthor" name="Delete author" camunda:delegateExpression="#{deleteAuthor}">
       <bpmn:incoming>Flow_0etbpiz</bpmn:incoming>
       <bpmn:outgoing>Flow_04pj8ok</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_02x1qvo" sourceRef="Activity_0bsxtva" targetRef="Event_0klsskz" />
-    <bpmn:serviceTask id="Activity_0bsxtva" name="Log process information" camunda:delegateExpression="#{logPathAuthorIdAndBookCount}">
+    <bpmn:sequenceFlow id="Flow_02x1qvo" sourceRef="logProcess" targetRef="Event_0klsskz" />
+    <bpmn:serviceTask id="logProcess" name="Log process information" camunda:delegateExpression="#{logProcess}">
       <bpmn:incoming>Flow_0w58if4</bpmn:incoming>
       <bpmn:incoming>Flow_04pj8ok</bpmn:incoming>
       <bpmn:outgoing>Flow_02x1qvo</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1j2flx2" sourceRef="StartEvent_1" targetRef="Activity_053xrc1" />
-    <bpmn:sequenceFlow id="Flow_052jru8" sourceRef="Activity_053xrc1" targetRef="Gateway_0l0a71x" />
-    <bpmn:sequenceFlow id="Flow_0w58if4" sourceRef="Activity_1kfra43" targetRef="Activity_0bsxtva" />
-    <bpmn:sequenceFlow id="Flow_04pj8ok" sourceRef="Activity_195l0x4" targetRef="Activity_0bsxtva" />
-    <bpmn:serviceTask id="Activity_053xrc1" name="Get the author count" camunda:delegateExpression="#{getAuthorBookCount}">
+    <bpmn:sequenceFlow id="Flow_1j2flx2" sourceRef="StartEvent_1" targetRef="addBookCount" />
+    <bpmn:sequenceFlow id="Flow_052jru8" sourceRef="addBookCount" targetRef="Gateway_0l0a71x" />
+    <bpmn:sequenceFlow id="Flow_0w58if4" sourceRef="keepAuthor" targetRef="logProcess" />
+    <bpmn:sequenceFlow id="Flow_04pj8ok" sourceRef="deleteAuthor" targetRef="logProcess" />
+    <bpmn:serviceTask id="addBookCount" name="Get the author count" camunda:delegateExpression="#{addBookCount}">
       <bpmn:incoming>Flow_1j2flx2</bpmn:incoming>
       <bpmn:outgoing>Flow_052jru8</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="request-author-book-count">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="172" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="152" y="272" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0l0a71x_di" bpmnElement="Gateway_0l0a71x" isMarkerVisible="true">
         <dc:Bounds x="435" y="222" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -55,25 +61,19 @@
           <dc:Bounds x="931" y="272" width="80" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1pakl96_di" bpmnElement="Activity_1kfra43">
+      <bpmndi:BPMNShape id="Activity_1pakl96_di" bpmnElement="keepAuthor">
         <dc:Bounds x="540" y="207" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0a3gccc_di" bpmnElement="Activity_195l0x4">
+      <bpmndi:BPMNShape id="Activity_0a3gccc_di" bpmnElement="deleteAuthor">
         <dc:Bounds x="540" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_14yv46v_di" bpmnElement="Activity_0bsxtva">
+      <bpmndi:BPMNShape id="Activity_14yv46v_di" bpmnElement="logProcess">
         <dc:Bounds x="800" y="207" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="172" y="229" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="152" y="272" width="77" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0sipl4k_di" bpmnElement="Activity_053xrc1">
+      <bpmndi:BPMNShape id="Activity_0sipl4k_di" bpmnElement="addBookCount">
         <dc:Bounds x="270" y="207" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1xox979_di" bpmnElement="Flow_1xox979">
