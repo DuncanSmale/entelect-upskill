@@ -1,7 +1,7 @@
-package com.entelect.upskill.library.controller.book;
+package com.entelect.upskill.library.controller.author;
 
-import com.entelect.upskill.library.dtos.BookDTO;
-import com.entelect.upskill.library.repository.BookRepository;
+import com.entelect.upskill.library.dtos.AuthorDTO;
+import com.entelect.upskill.library.repository.AuthorRepository;
 import com.entelect.upskill.properties.PersonProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,17 +27,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
-class BookControllerGetAllTest {
+class AuthorControllerGetAllTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private PersonProperties testConfiguration;
+
     @MockBean
-    private BookRepository bookRepository;
+    private AuthorRepository authorRepository;
 
     private String getUri() {
-        return "http://localhost/book";
+        return "http://localhost/author";
     }
 
     @BeforeEach
@@ -67,19 +69,25 @@ class BookControllerGetAllTest {
     }
 
     private void mockRepositoryBehaviour() {
-        when(bookRepository.findAll()).thenReturn(testConfiguration.getBooks());
+        when(authorRepository.findAll()).thenReturn(testConfiguration.getAuthors());
     }
 
     private void verifyResponse(MvcResult result) throws IOException {
-        BookDTO[] response = objectMapper.readValue(result.getResponse().getContentAsString(), BookDTO[].class);
+        AuthorDTO[] response = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO[].class);
         assertNotNull(response);
-        assertEquals("Happy Peter and the Wizard of Escabar", response[0].getTitle());
-        assertEquals("Penguin Books", response[0].getPublisher());
-        assertEquals("2021-01-03", response[0].getPublishedDate());
-        assertEquals("0-2487-9445-0", response[0].getISBN());
-        assertEquals("false", response[0].isDeleted());
-        assertEquals(1, response[0].getAuthorId());
 
+        assertEquals(2, response.length);
+
+        assertEquals("Peter", response[0].getFirstName());
+        assertEquals("Ryan", response[0].getLastName());
+        assertEquals("South Africa", response[0].getCountryOfResidence());
+        assertEquals("p@r.com", response[0].getEmailAddress());
+        assertFalse(response[0].isDeleted());
+
+        assertEquals("Dave", response[1].getFirstName());
+        assertEquals("Martin", response[1].getLastName());
+        assertEquals("UK", response[1].getCountryOfResidence());
+        assertEquals("d@m.com", response[1].getEmailAddress());
+        assertFalse(response[1].isDeleted());
     }
 }
-

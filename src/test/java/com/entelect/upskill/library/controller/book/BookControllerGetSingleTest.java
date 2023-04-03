@@ -1,9 +1,8 @@
-package com.entelect.upskill.library.controller;
+package com.entelect.upskill.library.controller.book;
 
-import com.entelect.upskill.library.dtos.AuthorDTO;
-import com.entelect.upskill.library.repository.AuthorRepository;
+import com.entelect.upskill.library.dtos.BookDTO;
+import com.entelect.upskill.library.repository.BookRepository;
 import com.entelect.upskill.properties.PersonProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,32 +18,30 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthorControllerPutTest {
+class BookControllerGetSingleTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private PersonProperties testConfiguration;
-
     @MockBean
-    private AuthorRepository authorRepository;
+    private BookRepository bookRepository;
 
     private String getUri() {
-        return "http://localhost/author/1";
+        return "http://localhost/book/1";
     }
 
     @BeforeEach
@@ -62,8 +59,7 @@ class AuthorControllerPutTest {
 
         // When
         MvcResult result = mockMvc.perform(
-                        put(getUri()).contentType(MediaType.APPLICATION_JSON)
-                                .content(stubRequestAsString())
+                        get(getUri()).contentType(MediaType.APPLICATION_JSON)
                                 .headers(new HttpHeaders()))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -74,25 +70,18 @@ class AuthorControllerPutTest {
     }
 
     private void mockRepositoryBehaviour() {
-        when(authorRepository.save(any())).thenAnswer(i -> i.getArguments()[0]);
+        when(bookRepository.findById(anyInt())).thenReturn(Optional.ofNullable(testConfiguration.getBooks().get(0)));
     }
-
-    private String stubRequestAsString() throws JsonProcessingException {
-        AuthorDTO stubAuthor = new AuthorDTO();
-        stubAuthor.setFirstName(testConfiguration.getAuthors().get(0).getFirstName());
-        stubAuthor.setLastName(testConfiguration.getAuthors().get(0).getLastName());
-        stubAuthor.setEmailAddress(testConfiguration.getAuthors().get(0).getEmailAddress());
-        stubAuthor.setCountryOfResidence(testConfiguration.getAuthors().get(0).getCountryOfResidence());
-        return objectMapper.writeValueAsString(stubAuthor);
-    }
-
 
     private void verifyResponse(MvcResult result) throws IOException {
-        AuthorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO.class);
+        BookDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), BookDTO.class);
         assertNotNull(response);
-        assertEquals("Peter", response.getFirstName());
-        assertEquals("Ryan", response.getLastName());
-        assertEquals("South Africa", response.getCountryOfResidence());
-        assertEquals("p@r.com", response.getEmailAddress());
+        assertEquals("Happy Peter and the Wizard of Escabar", response.getTitle());
+        assertEquals("Penguin Books", response.getPublisher());
+        assertEquals("2021-01-03", response.getPublishedDate());
+        assertEquals("0-2487-9445-0", response.getISBN());
+        assertEquals("false", response.isDeleted());
+        assertEquals(1, response.getAuthorId());
     }
 }
+

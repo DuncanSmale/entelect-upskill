@@ -1,4 +1,4 @@
-package com.entelect.upskill.library.controller;
+package com.entelect.upskill.library.controller.author;
 
 import com.entelect.upskill.library.dtos.AuthorDTO;
 import com.entelect.upskill.library.repository.AuthorRepository;
@@ -18,8 +18,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("testing")
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthorControllerGetAllTest {
+class AuthorControllerGetSingleTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
@@ -40,7 +42,7 @@ class AuthorControllerGetAllTest {
     private AuthorRepository authorRepository;
 
     private String getUri() {
-        return "http://localhost/author";
+        return "http://localhost/author/1";
     }
 
     @BeforeEach
@@ -69,25 +71,16 @@ class AuthorControllerGetAllTest {
     }
 
     private void mockRepositoryBehaviour() {
-        when(authorRepository.findAll()).thenReturn(testConfiguration.getAuthors());
+        when(authorRepository.findById(anyInt())).thenReturn(Optional.ofNullable(testConfiguration.getAuthors().get(0)));
     }
 
     private void verifyResponse(MvcResult result) throws IOException {
-        AuthorDTO[] response = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO[].class);
+        AuthorDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorDTO.class);
         assertNotNull(response);
-
-        assertEquals(2, response.length);
-
-        assertEquals("Peter", response[0].getFirstName());
-        assertEquals("Ryan", response[0].getLastName());
-        assertEquals("South Africa", response[0].getCountryOfResidence());
-        assertEquals("p@r.com", response[0].getEmailAddress());
-        assertFalse(response[0].isDeleted());
-
-        assertEquals("Dave", response[1].getFirstName());
-        assertEquals("Martin", response[1].getLastName());
-        assertEquals("UK", response[1].getCountryOfResidence());
-        assertEquals("d@m.com", response[1].getEmailAddress());
-        assertFalse(response[1].isDeleted());
+        assertEquals("Peter", response.getFirstName());
+        assertEquals("Ryan", response.getLastName());
+        assertEquals("South Africa", response.getCountryOfResidence());
+        assertEquals("p@r.com", response.getEmailAddress());
+        assertFalse(response.isDeleted());
     }
 }
