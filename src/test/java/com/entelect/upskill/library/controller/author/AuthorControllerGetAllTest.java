@@ -19,7 +19,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -82,12 +83,10 @@ class AuthorControllerGetAllTest {
         assertEquals("Ryan", response[0].getLastName());
         assertEquals("South Africa", response[0].getCountryOfResidence());
         assertEquals("p@r.com", response[0].getEmailAddress());
-        assertFalse(response[0].isDeleted());
 
         assertEquals("Dave", response[1].getFirstName());
         assertEquals("Martin", response[1].getLastName());
         assertEquals("UK", response[1].getCountryOfResidence());
         assertEquals("d@m.com", response[1].getEmailAddress());
-        assertFalse(response[1].isDeleted());
     }
 }

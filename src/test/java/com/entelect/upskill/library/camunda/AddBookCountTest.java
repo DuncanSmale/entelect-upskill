@@ -1,6 +1,6 @@
 package com.entelect.upskill.library.camunda;
 
-import com.entelect.upskill.library.repository.AuthorRepository;
+import com.entelect.upskill.library.repository.BookRepository;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,37 +9,38 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class RequestAuthorBookCountGreaterThanOneTest {
-
+public class AddBookCountTest {
     @Mock
-    private AuthorRepository authorRepository;
+    private BookRepository bookRepository;
 
     @Mock
     private DelegateExecution delegateExecution;
 
     @InjectMocks
-    private RequestAuthorBookCountGreaterThanOne cut;
+    private AddBookCount cut;
+
     @Test
     @DisplayName("Given a request, " +
             "when the execute method is invoked, " +
-            "then the set variable method is called once")
-    void checkAuthorBookCount() throws Exception {
+            "then execution and repository methods are called once")
+    public void getAuthorCount() {
         // Given
-        when(delegateExecution.getVariable(anyString())).thenReturn(1);
+        when(bookRepository.countBookEntitiesByAuthorId(0)).thenReturn(1L);
+        when(delegateExecution.getVariable("authorId")).thenReturn(0);
 
         // When
         cut.execute(delegateExecution);
 
         // Then
-        verify(delegateExecution, times(1)).getVariable(anyString());
-
+        verify(delegateExecution, times(1)).setVariable("count", 1L);
+        verify(bookRepository, times(1)).countBookEntitiesByAuthorId(0);
     }
+
+
 }

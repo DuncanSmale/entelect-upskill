@@ -9,14 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class RequestAuthorBookCountLessThanOrEqualToOneTest {
+class DeleteAuthorTest {
     @Mock
     private AuthorRepository authorRepository;
 
@@ -24,22 +22,22 @@ class RequestAuthorBookCountLessThanOrEqualToOneTest {
     private DelegateExecution delegateExecution;
 
     @InjectMocks
-    private RequestAuthorBookCountLessThanOrEqualToOne cut;
+    private DeleteAuthor cut;
 
     @Test
     @DisplayName("Given a request, " +
-    "when the execute method is invoked, " +
-    "then the set variable method is called once")
-    void checkAuthorBookCount() throws Exception {
+            "when the execute method is invoked, " +
+            "then the set variable method is called once")
+    void checkAuthorBookCount() {
         // Given
-        when(delegateExecution.getVariable(anyString())).thenReturn(1);
+        when(delegateExecution.getVariable("authorId")).thenReturn(1);
 
         // When
         cut.execute(delegateExecution);
 
         // Then
-        verify(delegateExecution, times(1)).getVariable(anyString());
-        verify(authorRepository, times(1)).deleteById(anyInt());
+        verify(delegateExecution, times(1)).getVariable("authorId");
+        verify(authorRepository, times(1)).deleteById(1);
     }
 
 }

@@ -9,14 +9,14 @@ import javax.inject.Named;
 
 @RequiredArgsConstructor
 @Named
-public class RequestAuthorBookCountGreaterThanOne implements JavaDelegate {
-
+public class AddBookCount implements JavaDelegate {
     private final BookRepository bookRepository;
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(DelegateExecution execution) {
         Integer authorId = (Integer) execution.getVariable("authorId");
+        Long count = bookRepository.countBookEntitiesByAuthorId(authorId);
 
-        execution.setVariable("path", "GREATER");
+        execution.setVariable("count", count);
     }
 }

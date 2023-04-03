@@ -14,5 +14,4 @@ public class BookDTO {
     private LocalDate publishedDate;
     private String publisher;
     private String ISBN;
-    private boolean deleted;
 }
