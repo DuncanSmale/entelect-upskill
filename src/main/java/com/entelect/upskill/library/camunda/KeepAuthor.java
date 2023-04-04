@@ -11,7 +11,7 @@ import javax.inject.Named;
 public class KeepAuthor implements JavaDelegate {
 
     @Override
-    public void execute(DelegateExecution execution) {
+    public void execute(DelegateExecution execution) throws Exception {
         execution.setVariable("path", "GREATER");
     }
 }

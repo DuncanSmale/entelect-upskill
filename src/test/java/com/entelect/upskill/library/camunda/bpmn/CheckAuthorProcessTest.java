@@ -1,6 +1,7 @@
 package com.entelect.upskill.library.camunda.bpmn;
 
 import com.entelect.upskill.library.camunda.AddBookCount;
+import com.entelect.upskill.library.camunda.BuildGenericError;
 import com.entelect.upskill.library.camunda.DeleteAuthor;
 import com.entelect.upskill.library.camunda.KeepAuthor;
 import com.entelect.upskill.library.camunda.LogProcess;
@@ -23,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.camunda.bpm.engine.test.assertions.bpmn.AbstractAssertions.processEngine;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({ProcessEngineExtension.class, MockitoExtension.class})
@@ -33,16 +35,17 @@ public class CheckAuthorProcessTest {
     private static final String DELETE_AUTHOR = "deleteAuthor";
     private static final String KEEP_AUTHOR = "keepAuthor";
     private static final String LOG_PROCESS = "logProcess";
+    private static final String BUILD_GENERIC_ERROR = "buildGenericError";
     private static final String PROCESS_KEY = "request-author-book-count";
 
     private static final Long BOOK_COUNT_GREATER = 3L;
     private static final Long BOOK_COUNT_ZERO = 0L;
     private static final Integer AUTHOR_ID = 1;
+
     @RegisterExtension
     ProcessEngineExtension extension = ProcessEngineExtension.builder()
             .configurationResource("camunda.cfg.xml")
             .build();
-
 
     @Mock
     private AuthorRepository authorRepository;
@@ -55,28 +58,26 @@ public class CheckAuthorProcessTest {
         BpmnAwareTests.init(extension.getProcessEngine());
         Mocks.register(ADD_BOOK_COUNT, new AddBookCount(bookRepository));
         Mocks.register(DELETE_AUTHOR, new DeleteAuthor(authorRepository));
+        Mocks.register(BUILD_GENERIC_ERROR, new BuildGenericError());
         Mocks.register(KEEP_AUTHOR, new KeepAuthor());
         Mocks.register(LOG_PROCESS, new LogProcess());
-
-
     }
 
     @Test
-    @DisplayName("Given an author book count is grater than 1, " +
+    @DisplayName("Given an author book count is greater than 1, " +
             "when a request is made to check the author, " +
             "then I expect the author is kept")
     void checkRequestAuthorBookCountGreaterPath() {
-
-        //Given
+        // Given
         when(bookRepository.countBookEntitiesByAuthorId(AUTHOR_ID)).thenReturn(BOOK_COUNT_GREATER);
 
-        //When
+        // When
         ProcessInstanceWithVariablesImpl processInstance = (ProcessInstanceWithVariablesImpl)
                 runtimeService().createProcessInstanceByKey(PROCESS_KEY)
                         .setVariable("authorId", AUTHOR_ID)
                         .execute();
 
-        //Then
+        // Then
         assertThat(processInstance).hasPassedInOrder(
                 ADD_BOOK_COUNT,
                 KEEP_AUTHOR,
@@ -93,21 +94,47 @@ public class CheckAuthorProcessTest {
             "when a request is made to check the author, " +
             "then I expect the author is deleted")
     void checkRequestAuthorBookCountLessThanPath() {
-
-        //Given
+        // Given
         when(bookRepository.countBookEntitiesByAuthorId(AUTHOR_ID)).thenReturn(BOOK_COUNT_ZERO);
 
-        //When
+        // When
         ProcessInstanceWithVariablesImpl processInstance = (ProcessInstanceWithVariablesImpl)
                 runtimeService().createProcessInstanceByKey(PROCESS_KEY)
                         .setVariable("authorId", AUTHOR_ID)
                         .execute();
 
-        //Then
+        // Then
         assertThat(processInstance).hasPassedInOrder(
                 ADD_BOOK_COUNT,
                 DELETE_AUTHOR,
                 LOG_PROCESS
+        );
+
+        assertThat(processInstance).isEnded();
+
+        ProcessTestCoverage.calculate(processInstance, processEngine());
+    }
+
+    @Test
+    @DisplayName("Given an invalid author ID, " +
+            "when a request is made to check the author, " +
+            "then I expect an the buildGenericError service to be called")
+    void checkInvalidAuthorId() {
+        // Given
+        when(bookRepository.countBookEntitiesByAuthorId(AUTHOR_ID)).thenReturn(BOOK_COUNT_ZERO);
+        doThrow(RuntimeException.class).when(authorRepository).deleteById(AUTHOR_ID);
+
+        // When
+        ProcessInstanceWithVariablesImpl processInstance = (ProcessInstanceWithVariablesImpl)
+                runtimeService().createProcessInstanceByKey(PROCESS_KEY)
+                        .setVariable("authorId", AUTHOR_ID)
+                        .execute();
+
+        // Then
+        assertThat(processInstance).hasPassedInOrder(
+                ADD_BOOK_COUNT,
+                DELETE_AUTHOR,
+                BUILD_GENERIC_ERROR
         );
 
         assertThat(processInstance).isEnded();

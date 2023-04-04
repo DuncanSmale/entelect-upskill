@@ -28,7 +28,7 @@ class DeleteAuthorTest {
     @DisplayName("Given a request, " +
             "when the execute method is invoked, " +
             "then the set variable method is called once")
-    void checkAuthorBookCount() {
+    void checkAuthorBookCount() throws Exception {
         // Given
         when(delegateExecution.getVariable("authorId")).thenReturn(1);
 

@@ -5,10 +5,12 @@ import com.entelect.upskill.library.mapper.BookMapper;
 import com.entelect.upskill.library.model.BookEntity;
 import com.entelect.upskill.library.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessInstanceWithVariablesImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("book")
 @RequiredArgsConstructor
+@Log
 public class BookController {
 
     private final BookRepository bookRepository;
@@ -76,10 +80,14 @@ public class BookController {
 
         processVariables.put("authorId", authorId);
 
-        ProcessInstanceWithVariablesImpl process = (ProcessInstanceWithVariablesImpl)
-                runtimeService.startProcessInstanceByKey(
-                        "request-author-book-count",
-                        processVariables
-                );
+        try {
+            ProcessInstanceWithVariablesImpl process = (ProcessInstanceWithVariablesImpl)
+                    runtimeService.startProcessInstanceByKey(
+                            "request-author-book-count",
+                            processVariables
+                    );
+        } catch (UnexpectedRollbackException e) {
+            log.warning("An error occurred: " + e.getMessage());
+        }
     }
 }

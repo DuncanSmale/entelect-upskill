@@ -29,7 +29,7 @@ public class AddBookCountTest {
     @DisplayName("Given a request, " +
             "when the execute method is invoked, " +
             "then execution and repository methods are called once")
-    public void getAuthorCount() {
+    public void getAuthorCount() throws Exception {
         // Given
         when(bookRepository.countBookEntitiesByAuthorId(0)).thenReturn(1L);
         when(delegateExecution.getVariable("authorId")).thenReturn(0);

@@ -26,7 +26,7 @@ class LogProcessTest {
     @DisplayName("Given a request, " +
             "when the execution method is invoked, " +
             "then the set variable method was called 3 times")
-    void checkExecutionGetVariableIsCalledThreeTime() {
+    void checkExecutionGetVariableIsCalledThreeTime() throws Exception {
         // Given
         when(delegateExecution.getVariable("authorId")).thenReturn(1);
         when(delegateExecution.getVariable("path")).thenReturn("path");

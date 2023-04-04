@@ -17,6 +17,7 @@
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0klsskz" name="The request has been completed">
       <bpmn:incoming>Flow_02x1qvo</bpmn:incoming>
+      <bpmn:incoming>Flow_1o0awg9</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:serviceTask id="keepAuthor" name="Return the author and count" camunda:delegateExpression="#{keepAuthor}">
       <bpmn:incoming>Flow_1xox979</bpmn:incoming>
@@ -37,81 +38,122 @@
     <bpmn:sequenceFlow id="Flow_0w58if4" sourceRef="keepAuthor" targetRef="logProcess" />
     <bpmn:sequenceFlow id="Flow_04pj8ok" sourceRef="deleteAuthor" targetRef="logProcess" />
     <bpmn:serviceTask id="addBookCount" name="Get the author count" camunda:delegateExpression="#{addBookCount}">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_1j2flx2</bpmn:incoming>
       <bpmn:outgoing>Flow_052jru8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="Event_1c7zisj" attachedToRef="addBookCount">
+      <bpmn:outgoing>Flow_1qt3w8p</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1a1nxxt" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1qt3w8p" sourceRef="Event_1c7zisj" targetRef="buildGenericError" />
+    <bpmn:sequenceFlow id="Flow_1o0awg9" sourceRef="buildGenericError" targetRef="Event_0klsskz" />
+    <bpmn:sequenceFlow id="Flow_0c44r8x" sourceRef="Event_1f0490w" targetRef="buildGenericError" />
+    <bpmn:boundaryEvent id="Event_1f0490w" attachedToRef="deleteAuthor">
+      <bpmn:outgoing>Flow_0c44r8x</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_01u530b" />
+    </bpmn:boundaryEvent>
+    <bpmn:serviceTask id="buildGenericError" name="Build Generic Error" camunda:delegateExpression="#{buildGenericError}">
+      <bpmn:incoming>Flow_1qt3w8p</bpmn:incoming>
+      <bpmn:incoming>Flow_0c44r8x</bpmn:incoming>
+      <bpmn:outgoing>Flow_1o0awg9</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="request-author-book-count">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="172" y="229" width="36" height="36" />
+        <dc:Bounds x="172" y="369" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="152" y="272" width="77" height="27" />
+          <dc:Bounds x="152" y="412" width="77" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0l0a71x_di" bpmnElement="Gateway_0l0a71x" isMarkerVisible="true">
-        <dc:Bounds x="435" y="222" width="50" height="50" />
+        <dc:Bounds x="435" y="362" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="418" y="279" width="85" height="27" />
+          <dc:Bounds x="418" y="419" width="85" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0klsskz_di" bpmnElement="Event_0klsskz">
-        <dc:Bounds x="952" y="229" width="36" height="36" />
+        <dc:Bounds x="952" y="369" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="931" y="272" width="80" height="27" />
+          <dc:Bounds x="932" y="412" width="79" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1pakl96_di" bpmnElement="keepAuthor">
-        <dc:Bounds x="540" y="207" width="100" height="80" />
+        <dc:Bounds x="540" y="347" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0a3gccc_di" bpmnElement="deleteAuthor">
-        <dc:Bounds x="540" y="80" width="100" height="80" />
+        <dc:Bounds x="540" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_14yv46v_di" bpmnElement="logProcess">
-        <dc:Bounds x="800" y="207" width="100" height="80" />
+        <dc:Bounds x="800" y="347" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0sipl4k_di" bpmnElement="addBookCount">
-        <dc:Bounds x="270" y="207" width="100" height="80" />
+        <dc:Bounds x="270" y="347" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0argnqk_di" bpmnElement="buildGenericError">
+        <dc:Bounds x="540" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ysbvzj_di" bpmnElement="Event_1c7zisj">
+        <dc:Bounds x="302" y="329" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1u0x3lr_di" bpmnElement="Event_1f0490w">
+        <dc:Bounds x="572" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1j2flx2_di" bpmnElement="Flow_1j2flx2">
+        <di:waypoint x="208" y="387" />
+        <di:waypoint x="270" y="387" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_052jru8_di" bpmnElement="Flow_052jru8">
+        <di:waypoint x="370" y="387" />
+        <di:waypoint x="435" y="387" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1xox979_di" bpmnElement="Flow_1xox979">
-        <di:waypoint x="485" y="247" />
-        <di:waypoint x="540" y="247" />
+        <di:waypoint x="485" y="387" />
+        <di:waypoint x="540" y="387" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="505" y="229" width="15" height="14" />
+          <dc:Bounds x="505" y="369" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0etbpiz_di" bpmnElement="Flow_0etbpiz">
-        <di:waypoint x="460" y="222" />
-        <di:waypoint x="460" y="120" />
-        <di:waypoint x="540" y="120" />
+        <di:waypoint x="460" y="362" />
+        <di:waypoint x="460" y="260" />
+        <di:waypoint x="540" y="260" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="466" y="168" width="18" height="14" />
+          <dc:Bounds x="466" y="308" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02x1qvo_di" bpmnElement="Flow_02x1qvo">
-        <di:waypoint x="900" y="247" />
-        <di:waypoint x="952" y="247" />
+        <di:waypoint x="900" y="387" />
+        <di:waypoint x="952" y="387" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1j2flx2_di" bpmnElement="Flow_1j2flx2">
-        <di:waypoint x="208" y="247" />
-        <di:waypoint x="270" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_052jru8_di" bpmnElement="Flow_052jru8">
-        <di:waypoint x="370" y="247" />
-        <di:waypoint x="435" y="247" />
+      <bpmndi:BPMNEdge id="Flow_1o0awg9_di" bpmnElement="Flow_1o0awg9">
+        <di:waypoint x="640" y="120" />
+        <di:waypoint x="920" y="120" />
+        <di:waypoint x="920" y="387" />
+        <di:waypoint x="952" y="387" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0w58if4_di" bpmnElement="Flow_0w58if4">
-        <di:waypoint x="640" y="247" />
-        <di:waypoint x="800" y="247" />
+        <di:waypoint x="640" y="387" />
+        <di:waypoint x="800" y="387" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_04pj8ok_di" bpmnElement="Flow_04pj8ok">
-        <di:waypoint x="640" y="120" />
-        <di:waypoint x="720" y="120" />
-        <di:waypoint x="720" y="247" />
-        <di:waypoint x="800" y="247" />
+        <di:waypoint x="640" y="260" />
+        <di:waypoint x="720" y="260" />
+        <di:waypoint x="720" y="387" />
+        <di:waypoint x="800" y="387" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qt3w8p_di" bpmnElement="Flow_1qt3w8p">
+        <di:waypoint x="320" y="329" />
+        <di:waypoint x="320" y="120" />
+        <di:waypoint x="540" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0c44r8x_di" bpmnElement="Flow_0c44r8x">
+        <di:waypoint x="590" y="202" />
+        <di:waypoint x="590" y="160" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

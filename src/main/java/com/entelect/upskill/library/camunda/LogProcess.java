@@ -11,7 +11,7 @@ import javax.inject.Named;
 public class LogProcess implements JavaDelegate {
 
     @Override
-    public void execute(DelegateExecution execution) {
+    public void execute(DelegateExecution execution) throws Exception {
         Integer authorId = (Integer) execution.getVariable("authorId");
         Long bookCount = (Long) execution.getVariable("count");
         String path = (String) execution.getVariable("path");
