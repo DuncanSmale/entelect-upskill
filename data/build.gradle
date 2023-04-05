@@ -1,0 +1,14 @@
+def generatedSourceRoot = file("build/generated")
+
+sourceSets {
+    main {
+        java {
+            srcDir generatedSourceRoot
+            srcDirs "src/main/java"
+        }
+    }
+}
+dependencies {
+
+    api project(":usecases")
+}

@@ -8,11 +8,19 @@ buildscript {
         springBootVersion = "2.5.1"
         springCloudVersion = "2020.0.3"
         springDependencyManagementVersion = "1.0.10.RELEASE"
+        mysqlVersion = "8.0.13"
+
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
         classpath "io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}"
     }
+    repositories {
+        mavenCentral()
+    }
+}
+allprojects {
+
     repositories {
         mavenCentral()
     }
@@ -40,16 +48,26 @@ subprojects {
 
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-        implementation("roup: 'mysql', name: 'mysql-connector-java', version: '8.0.28")
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.cloud:spring-cloud-starter-config")
+
+
+        compileOnly("org.projectlombok:lombok:${lombokVersion}")
+
+        api("mysql:mysql-connector-java:${mysqlVersion}")
+        api("org.mapstruct:mapstruct:${mapstructVersion}")
+
+        annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+        annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+        annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+
+
+        testAnnotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}")
+
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}")
         testImplementation("com.h2database:h2")
-        compileOnly("org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}")
-        implementation("org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}")
-        annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}")
-        testAnnotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}")
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
+
     }
 
     tasks.named('test') {
