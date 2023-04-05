@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <meta http-equiv="cache-control" content="max-age=0" />
+  <meta http-equiv="cache-control" content="no-cache" />
+  <meta http-equiv="expires" content="0" />
+  <meta http-equiv="pragma" content="no-cache" />
+
+  <style type="text/css">
+    html, body, #canvas {
+      height: 100%;
+      padding: 0;
+    }
+    
+    .highlight:not(.djs-connection) .djs-visual > :nth-child(1) {
+      fill: rgba(66, 180, 21, 0.7) !important; /* color elements as green */
+    }
+  </style>
+
+  <title>Process Test Coverage Report</title>
+</head>
+<body>
+  <!-- element to draw bpmn diagram in -->
+  <div id="canvas"></div>
+
+  <!-- scripts -->
+
+  <!-- seed dependencies (required for demo only) -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+
+  <!-- bpmn-js viewer -->
+  <script src="bower_components/bpmn-js/dist/bpmn-viewer.js"></script>
+
+  <!-- application -->
+  <script>
+    (function(BpmnViewer, $) {
+
+      // create viewer
+      var bpmnViewer = new BpmnViewer({
+        container: '#canvas'
+      });
+
+
+      // import function
+      function importXML(xml) {
+
+        // import diagram
+        bpmnViewer.importXML(xml, function(err) {
+
+          if (err) {
+            return console.error('could not import BPMN 2.0 diagram', err);
+          }
+
+          var canvas = bpmnViewer.get('canvas'),
+              overlays = bpmnViewer.get('overlays');
+
+
+          // zoom to fit full viewport
+          canvas.zoom('fit-viewport');
+          
+          canvas.addMarker('Event_0klsskz', 'highlight');
+          canvas.addMarker('Gateway_0l0a71x', 'highlight');
+          canvas.addMarker('StartEvent_1', 'highlight');
+          canvas.addMarker('addBookCount', 'highlight');
+          canvas.addMarker('keepAuthor', 'highlight');
+          canvas.addMarker('logProcess', 'highlight');
+          //YOUR ANNOTATIONS GO HERE
+
+        });
+      }
+
+
+      var diagramXML = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<bpmn:definitions xmlns:bpmn=\"http:\/\/www.omg.org\/spec\/BPMN\/20100524\/MODEL\" xmlns:bpmndi=\"http:\/\/www.omg.org\/spec\/BPMN\/20100524\/DI\" xmlns:dc=\"http:\/\/www.omg.org\/spec\/DD\/20100524\/DC\" xmlns:xsi=\"http:\/\/www.w3.org\/2001\/XMLSchema-instance\" xmlns:camunda=\"http:\/\/camunda.org\/schema\/1.0\/bpmn\" xmlns:di=\"http:\/\/www.omg.org\/spec\/DD\/20100524\/DI\" xmlns:modeler=\"http:\/\/camunda.org\/schema\/modeler\/1.0\" id=\"Definitions_0uw76fc\" targetNamespace=\"http:\/\/bpmn.io\/schema\/bpmn\" exporter=\"Camunda Modeler\" exporterVersion=\"5.9.0\" modeler:executionPlatform=\"Camunda Platform\" modeler:executionPlatformVersion=\"7.18.0\">\r\n  <bpmn:process id=\"request-author-book-count\" name=\"Request Author Book Count\" isExecutable=\"true\">\r\n    <bpmn:startEvent id=\"StartEvent_1\" name=\"Request author book count\">\r\n      <bpmn:outgoing>Flow_1j2flx2<\/bpmn:outgoing>\r\n    <\/bpmn:startEvent>\r\n    <bpmn:exclusiveGateway id=\"Gateway_0l0a71x\" name=\"Is the count less than or equal to 1\">\r\n      <bpmn:incoming>Flow_052jru8<\/bpmn:incoming>\r\n      <bpmn:outgoing>Flow_1xox979<\/bpmn:outgoing>\r\n      <bpmn:outgoing>Flow_0etbpiz<\/bpmn:outgoing>\r\n    <\/bpmn:exclusiveGateway>\r\n    <bpmn:sequenceFlow id=\"Flow_1xox979\" name=\"No\" sourceRef=\"Gateway_0l0a71x\" targetRef=\"keepAuthor\">\r\n      <bpmn:conditionExpression xsi:type=\"bpmn:tFormalExpression\">#{count &gt; 1}<\/bpmn:conditionExpression>\r\n    <\/bpmn:sequenceFlow>\r\n    <bpmn:sequenceFlow id=\"Flow_0etbpiz\" name=\"Yes\" sourceRef=\"Gateway_0l0a71x\" targetRef=\"deleteAuthor\">\r\n      <bpmn:conditionExpression xsi:type=\"bpmn:tFormalExpression\">#{count &lt;= 1}<\/bpmn:conditionExpression>\r\n    <\/bpmn:sequenceFlow>\r\n    <bpmn:endEvent id=\"Event_0klsskz\" name=\"The request has been completed\">\r\n      <bpmn:incoming>Flow_02x1qvo<\/bpmn:incoming>\r\n    <\/bpmn:endEvent>\r\n    <bpmn:serviceTask id=\"keepAuthor\" name=\"Return the author and count\" camunda:delegateExpression=\"#{keepAuthor}\">\r\n      <bpmn:incoming>Flow_1xox979<\/bpmn:incoming>\r\n      <bpmn:outgoing>Flow_0w58if4<\/bpmn:outgoing>\r\n    <\/bpmn:serviceTask>\r\n    <bpmn:serviceTask id=\"deleteAuthor\" name=\"Delete author\" camunda:delegateExpression=\"#{deleteAuthor}\">\r\n      <bpmn:incoming>Flow_0etbpiz<\/bpmn:incoming>\r\n      <bpmn:outgoing>Flow_04pj8ok<\/bpmn:outgoing>\r\n    <\/bpmn:serviceTask>\r\n    <bpmn:sequenceFlow id=\"Flow_02x1qvo\" sourceRef=\"logProcess\" targetRef=\"Event_0klsskz\" \/>\r\n    <bpmn:serviceTask id=\"logProcess\" name=\"Log process information\" camunda:delegateExpression=\"#{logProcess}\">\r\n      <bpmn:incoming>Flow_0w58if4<\/bpmn:incoming>\r\n      <bpmn:incoming>Flow_04pj8ok<\/bpmn:incoming>\r\n      <bpmn:outgoing>Flow_02x1qvo<\/bpmn:outgoing>\r\n    <\/bpmn:serviceTask>\r\n    <bpmn:sequenceFlow id=\"Flow_1j2flx2\" sourceRef=\"StartEvent_1\" targetRef=\"addBookCount\" \/>\r\n    <bpmn:sequenceFlow id=\"Flow_052jru8\" sourceRef=\"addBookCount\" targetRef=\"Gateway_0l0a71x\" \/>\r\n    <bpmn:sequenceFlow id=\"Flow_0w58if4\" sourceRef=\"keepAuthor\" targetRef=\"logProcess\" \/>\r\n    <bpmn:sequenceFlow id=\"Flow_04pj8ok\" sourceRef=\"deleteAuthor\" targetRef=\"logProcess\" \/>\r\n    <bpmn:serviceTask id=\"addBookCount\" name=\"Get the author count\" camunda:delegateExpression=\"#{addBookCount}\">\r\n      <bpmn:incoming>Flow_1j2flx2<\/bpmn:incoming>\r\n      <bpmn:outgoing>Flow_052jru8<\/bpmn:outgoing>\r\n    <\/bpmn:serviceTask>\r\n  <\/bpmn:process>\r\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\r\n    <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"request-author-book-count\">\r\n      <bpmndi:BPMNShape id=\"_BPMNShape_StartEvent_2\" bpmnElement=\"StartEvent_1\">\r\n        <dc:Bounds x=\"172\" y=\"229\" width=\"36\" height=\"36\" \/>\r\n        <bpmndi:BPMNLabel>\r\n          <dc:Bounds x=\"152\" y=\"272\" width=\"77\" height=\"27\" \/>\r\n        <\/bpmndi:BPMNLabel>\r\n      <\/bpmndi:BPMNShape>\r\n      <bpmndi:BPMNShape id=\"Gateway_0l0a71x_di\" bpmnElement=\"Gateway_0l0a71x\" isMarkerVisible=\"true\">\r\n        <dc:Bounds x=\"435\" y=\"222\" width=\"50\" height=\"50\" \/>\r\n        <bpmndi:BPMNLabel>\r\n          <dc:Bounds x=\"418\" y=\"279\" width=\"85\" height=\"27\" \/>\r\n        <\/bpmndi:BPMNLabel>\r\n      <\/bpmndi:BPMNShape>\r\n      <bpmndi:BPMNShape id=\"Event_0klsskz_di\" bpmnElement=\"Event_0klsskz\">\r\n        <dc:Bounds x=\"952\" y=\"229\" width=\"36\" height=\"36\" \/>\r\n        <bpmndi:BPMNLabel>\r\n          <dc:Bounds x=\"931\" y=\"272\" width=\"80\" height=\"27\" \/>\r\n        <\/bpmndi:BPMNLabel>\r\n      <\/bpmndi:BPMNShape>\r\n      <bpmndi:BPMNShape id=\"Activity_1pakl96_di\" bpmnElement=\"keepAuthor\">\r\n        <dc:Bounds x=\"540\" y=\"207\" width=\"100\" height=\"80\" \/>\r\n        <bpmndi:BPMNLabel \/>\r\n      <\/bpmndi:BPMNShape>\r\n      <bpmndi:BPMNShape id=\"Activity_0a3gccc_di\" bpmnElement=\"deleteAuthor\">\r\n        <dc:Bounds x=\"540\" y=\"80\" width=\"100\" height=\"80\" \/>\r\n        <bpmndi:BPMNLabel \/>\r\n      <\/bpmndi:BPMNShape>\r\n      <bpmndi:BPMNShape id=\"Activity_14yv46v_di\" bpmnElement=\"logProcess\">\r\n        <dc:Bounds x=\"800\" y=\"207\" width=\"100\" height=\"80\" \/>\r\n        <bpmndi:BPMNLabel \/>\r\n      <\/bpmndi:BPMNShape>\r\n      <bpmndi:BPMNShape id=\"Activity_0sipl4k_di\" bpmnElement=\"addBookCount\">\r\n        <dc:Bounds x=\"270\" y=\"207\" width=\"100\" height=\"80\" \/>\r\n      <\/bpmndi:BPMNShape>\r\n      <bpmndi:BPMNEdge id=\"Flow_1xox979_di\" bpmnElement=\"Flow_1xox979\">\r\n        <di:waypoint x=\"485\" y=\"247\" \/>\r\n        <di:waypoint x=\"540\" y=\"247\" \/>\r\n        <bpmndi:BPMNLabel>\r\n          <dc:Bounds x=\"505\" y=\"229\" width=\"15\" height=\"14\" \/>\r\n        <\/bpmndi:BPMNLabel>\r\n      <\/bpmndi:BPMNEdge>\r\n      <bpmndi:BPMNEdge id=\"Flow_0etbpiz_di\" bpmnElement=\"Flow_0etbpiz\">\r\n        <di:waypoint x=\"460\" y=\"222\" \/>\r\n        <di:waypoint x=\"460\" y=\"120\" \/>\r\n        <di:waypoint x=\"540\" y=\"120\" \/>\r\n        <bpmndi:BPMNLabel>\r\n          <dc:Bounds x=\"466\" y=\"168\" width=\"18\" height=\"14\" \/>\r\n        <\/bpmndi:BPMNLabel>\r\n      <\/bpmndi:BPMNEdge>\r\n      <bpmndi:BPMNEdge id=\"Flow_02x1qvo_di\" bpmnElement=\"Flow_02x1qvo\">\r\n        <di:waypoint x=\"900\" y=\"247\" \/>\r\n        <di:waypoint x=\"952\" y=\"247\" \/>\r\n      <\/bpmndi:BPMNEdge>\r\n      <bpmndi:BPMNEdge id=\"Flow_1j2flx2_di\" bpmnElement=\"Flow_1j2flx2\">\r\n        <di:waypoint x=\"208\" y=\"247\" \/>\r\n        <di:waypoint x=\"270\" y=\"247\" \/>\r\n      <\/bpmndi:BPMNEdge>\r\n      <bpmndi:BPMNEdge id=\"Flow_052jru8_di\" bpmnElement=\"Flow_052jru8\">\r\n        <di:waypoint x=\"370\" y=\"247\" \/>\r\n        <di:waypoint x=\"435\" y=\"247\" \/>\r\n      <\/bpmndi:BPMNEdge>\r\n      <bpmndi:BPMNEdge id=\"Flow_0w58if4_di\" bpmnElement=\"Flow_0w58if4\">\r\n        <di:waypoint x=\"640\" y=\"247\" \/>\r\n        <di:waypoint x=\"800\" y=\"247\" \/>\r\n      <\/bpmndi:BPMNEdge>\r\n      <bpmndi:BPMNEdge id=\"Flow_04pj8ok_di\" bpmnElement=\"Flow_04pj8ok\">\r\n        <di:waypoint x=\"640\" y=\"120\" \/>\r\n        <di:waypoint x=\"720\" y=\"120\" \/>\r\n        <di:waypoint x=\"720\" y=\"247\" \/>\r\n        <di:waypoint x=\"800\" y=\"247\" \/>\r\n      <\/bpmndi:BPMNEdge>\r\n    <\/bpmndi:BPMNPlane>\r\n  <\/bpmndi:BPMNDiagram>\r\n<\/bpmn:definitions>\r\n';
+      importXML(diagramXML);
+
+    })(window.BpmnJS, window.jQuery);
+  </script>
+</body>
+</html>

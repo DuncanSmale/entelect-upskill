@@ -1,1 +1,6 @@
 rootProject.name = 'upskill'
+include 'usecases'
+include 'restapi'
+include 'services'
+include 'entities'
+
