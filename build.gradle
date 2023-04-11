@@ -39,6 +39,10 @@ subprojects {
     group 'com.entelect'
     version '0.0.1-SNAPSHOT'
 
+    test {
+        useJUnitPlatform()
+    }
+
     dependencyManagement {
         imports {
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
@@ -68,10 +72,6 @@ subprojects {
         testImplementation("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}")
         testImplementation("com.h2database:h2")
 
-    }
-
-    tasks.named('test') {
-        useJUnitPlatform()
     }
 
 }

@@ -11,5 +11,4 @@ public class Author {
     private String lastName;
     private String countryOfResidence;
     private String emailAddress;
-
 }

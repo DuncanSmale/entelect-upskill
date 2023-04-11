@@ -10,14 +10,8 @@ import java.time.LocalDate;
 public class Book {
     private Integer bookId;
     private Integer authorId;
-
     private String title;
-
     private LocalDate publishedDate;
-
     private String publisher;
-
     private String ISBN;
-
-
 }
