@@ -2,7 +2,7 @@ package com.entelect.upskill.concatenatebooktitles;
 
 import com.entelect.upskill.model.BookEntity;
 import com.entelect.upskill.repository.BookRepository;
-import com.entelect.upskill.usecases.concatenatebooktitles.BookTitlesStringByAuthor;
+import com.entelect.upskill.usecases.concatenatebooktitles.BookTitlesStringByAuthorGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
-public class BookTitlesStringByAuthorImpl implements BookTitlesStringByAuthor {
+public class BookTitlesStringByAuthorGatewayImpl implements BookTitlesStringByAuthorGateway {
 
     private final BookRepository bookRepository;
 
     @Override
-    public BookTitlesStringByAuthor.Response getBookTitlesByAuthor(BookTitlesStringByAuthor.Request request) {
+    public BookTitlesStringByAuthorGateway.Response getBookTitlesByAuthor(BookTitlesStringByAuthorGateway.Request request) {
         List<BookEntity> bookList = bookRepository.findBookEntitiesByAuthorId(request.getAuthorId());
         String concatenatedTitles = bookList.stream().map(BookEntity::getTitle).collect(Collectors.joining(", "));
-        BookTitlesStringByAuthor.Response response = new BookTitlesStringByAuthor.Response();
+        BookTitlesStringByAuthorGateway.Response response = new BookTitlesStringByAuthorGateway.Response();
         response.setBookTitlesString(concatenatedTitles);
         return response;
     }

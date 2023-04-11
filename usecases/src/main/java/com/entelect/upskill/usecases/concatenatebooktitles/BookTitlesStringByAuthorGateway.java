@@ -3,7 +3,7 @@ package com.entelect.upskill.usecases.concatenatebooktitles;
 import lombok.Getter;
 import lombok.Setter;
 
-public interface BookTitlesStringByAuthor {
+public interface BookTitlesStringByAuthorGateway {
 
     Response getBookTitlesByAuthor(Request request);
 

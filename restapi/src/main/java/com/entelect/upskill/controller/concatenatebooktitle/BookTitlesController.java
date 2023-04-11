@@ -1,7 +1,7 @@
 package com.entelect.upskill.controller.concatenatebooktitle;
 
-import com.entelect.upskill.concatenatebooktitles.BookTitlesStringByAuthorImpl;
-import com.entelect.upskill.usecases.concatenatebooktitles.BookTitlesStringByAuthor;
+import com.entelect.upskill.concatenatebooktitles.BookTitlesStringByAuthorGatewayImpl;
+import com.entelect.upskill.usecases.concatenatebooktitles.BookTitlesStringByAuthorGateway;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BookTitlesController {
 
-    private final BookTitlesStringByAuthorImpl concatenateBookTitlesGatewayImpl;
+    private final BookTitlesStringByAuthorGatewayImpl concatenateBookTitlesGatewayImpl;
 
     @PostMapping
     public ConcatenateBookTitlesResponse getBookTitlesByAuthor(@RequestBody ConcatenateBookTitlesRequest request) {
-        BookTitlesStringByAuthor.Response concatenationResponse = concatenateBookTitlesGatewayImpl
+        BookTitlesStringByAuthorGateway.Response concatenationResponse = concatenateBookTitlesGatewayImpl
                 .getBookTitlesByAuthor(ConcatenateTitlesMapper.INSTANCE.toRequest(request));
         return ConcatenateTitlesMapper.INSTANCE.toResponse(concatenationResponse);
     }
