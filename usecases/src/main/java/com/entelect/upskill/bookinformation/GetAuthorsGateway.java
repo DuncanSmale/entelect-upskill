@@ -1,18 +1,19 @@
 package com.entelect.upskill.bookinformation;
 
+import com.entelect.entities.Author;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
-public interface BookInformationGateway {
+public interface GetAuthorsGateway {
 
-    Response getBookInformation();
+    Response getAuthors();
 
     @Setter
     @Getter
     class Response {
-        List<String> bookInformationList;
+        List<Author> authorList;
     }
 
 

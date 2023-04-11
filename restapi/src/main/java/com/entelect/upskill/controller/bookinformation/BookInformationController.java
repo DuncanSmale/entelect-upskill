@@ -1,7 +1,7 @@
 package com.entelect.upskill.controller.bookinformation;
 
-import com.entelect.upskill.bookinformation.BookInformationGateway;
-import com.entelect.upskill.bookinformation.BookInformationGatewayImp;
+import com.entelect.upskill.bookinformation.GetAuthorsGateway;
+import com.entelect.upskill.bookinformation.GetBookInformation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,11 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookInformationController {
 
-    private final BookInformationGatewayImp bookInformationGatewayImp;
+    private final GetBookInformation getBookInformation;
 
     @GetMapping
     public ResponseEntity<Response> getBookInformation() {
-        BookInformationGateway.Response bookInformationStringList = bookInformationGatewayImp.getBookInformation();
+        GetBookInformation.Response bookInformationStringList = getBookInformation.getBookInformation();
         Response bookInformationResponse = new Response();
         bookInformationResponse.setBookInformationList(bookInformationStringList.getBookInformationList());
         return ResponseEntity.ok(bookInformationResponse);
