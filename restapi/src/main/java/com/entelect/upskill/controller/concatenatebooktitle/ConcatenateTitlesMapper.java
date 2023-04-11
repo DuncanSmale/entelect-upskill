@@ -1,6 +1,6 @@
 package com.entelect.upskill.controller.concatenatebooktitle;
 
-import com.entelect.upskill.usecases.concatenatebooktitles.BookTitlesStringByAuthorGateway;
+import com.entelect.upskill.usecases.concatenatebooktitles.BookTitleStringForAuthor;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 public interface ConcatenateTitlesMapper {
     ConcatenateTitlesMapper INSTANCE = Mappers.getMapper(ConcatenateTitlesMapper.class);
 
-    BookTitlesStringByAuthorGateway.Request toRequest(BookTitlesController.ConcatenateBookTitlesRequest incomingRequest);
+    BookTitleStringForAuthor.Request toRequest(BookTitlesController.ConcatenateBookTitlesRequest incomingRequest);
 
-    BookTitlesController.ConcatenateBookTitlesResponse toResponse(BookTitlesStringByAuthorGateway.Response outGoingResponse);
+    BookTitlesController.ConcatenateBookTitlesResponse toResponse(BookTitleStringForAuthor.Response outGoingResponse);
 }
