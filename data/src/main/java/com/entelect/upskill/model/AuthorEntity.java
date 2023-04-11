@@ -10,7 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "authors")
@@ -27,5 +31,9 @@ public class AuthorEntity {
     private String lastName;
     private String countryOfResidence;
     private String emailAddress;
+
+    @OneToMany
+    @JoinColumn(name = "authorId", referencedColumnName = "authorId")
+    private List<BookEntity> books = new ArrayList<>();
 
 }
