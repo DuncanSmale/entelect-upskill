@@ -1,6 +1,6 @@
-package com.entelect.services.configuration;
+package com.entelect.upskill.services.configuration;
 
-import com.entelect.services.common.RestTemplateCaller;
+import com.entelect.upskill.services.common.RestTemplateCaller;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

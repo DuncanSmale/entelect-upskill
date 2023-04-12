@@ -1,7 +1,7 @@
-package com.entelect.upskill.productdefinition;
+package com.entelect.upskill.controller.salescatelog.productdefinition;
 
-import com.entelect.services.productdetails.ProductDefinitionGatewayImpl;
-import com.entelect.services.productdetails.dtos.ProductDefinitionResponseDTO;
+import com.entelect.upskill.services.salescatelog.productdetails.ProductDefinitionGatewayImpl;
+import com.entelect.upskill.services.salescatelog.productdetails.dtos.ProductDefinitionResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

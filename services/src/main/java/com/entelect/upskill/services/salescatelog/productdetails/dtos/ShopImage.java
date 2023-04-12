@@ -1,4 +1,4 @@
-package com.entelect.services.productdetails.dtos;
+package com.entelect.upskill.services.salescatelog.productdetails.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,12 +1,11 @@
-package com.entelect.services.productdetails.dtos;
+package com.entelect.upskill.services.salescatelog.productdetails.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductDefinitionPricingOption {
+public class ProductDefinitionFeeCycleDate {
     private String code = null;
-    private Double amount = null;
     private String description = null;
 }

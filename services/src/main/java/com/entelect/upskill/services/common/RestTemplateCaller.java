@@ -1,4 +1,4 @@
-package com.entelect.services.common;
+package com.entelect.upskill.services.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

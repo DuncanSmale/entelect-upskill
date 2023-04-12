@@ -1,8 +1,8 @@
-package com.entelect.services.productdetails;
+package com.entelect.upskill.services.salescatelog.productdetails;
 
-import com.entelect.services.common.RestTemplateCaller;
-import com.entelect.services.productdetails.dtos.ProductDefinitionRequestDTO;
-import com.entelect.services.productdetails.dtos.ProductDefinitionResponseDTO;
+import com.entelect.upskill.services.common.RestTemplateCaller;
+import com.entelect.upskill.services.salescatelog.productdetails.dtos.ProductDefinitionRequestDTO;
+import com.entelect.upskill.services.salescatelog.productdetails.dtos.ProductDefinitionResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
