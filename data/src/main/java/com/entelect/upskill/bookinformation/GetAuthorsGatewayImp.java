@@ -13,7 +13,8 @@ public class GetAuthorsGatewayImp implements GetAuthorsGateway {
 
     private final AuthorRepository authorRepository;
 
-    public GetAuthorsGatewayImp(AuthorRepository authorRepository) {
+    public GetAuthorsGatewayImp(AuthorRepository authorRepository)
+    {
         this.authorRepository = authorRepository;
     }
 

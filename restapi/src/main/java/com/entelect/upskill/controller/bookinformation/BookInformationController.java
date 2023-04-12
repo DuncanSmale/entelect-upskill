@@ -1,6 +1,5 @@
 package com.entelect.upskill.controller.bookinformation;
 
-import com.entelect.upskill.bookinformation.GetAuthorsGateway;
 import com.entelect.upskill.bookinformation.GetBookInformation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
