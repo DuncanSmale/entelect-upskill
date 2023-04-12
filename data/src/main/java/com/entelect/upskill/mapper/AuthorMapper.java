@@ -10,6 +10,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AuthorMapper {
     AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
+
     Author toAuthorDTO(AuthorEntity authorEntity);
 
     AuthorEntity toAuthorEntity(Author authorDTO);
